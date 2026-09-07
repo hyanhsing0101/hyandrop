@@ -1,0 +1,27 @@
+.DS_Store
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Go
+backend/bin/
+backend/tmp/
+backend/*.test
+backend/coverage.out
+
+# Node
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/*.tsbuildinfo
+frontend/vite.config.d.ts
+frontend/vite.config.js
+
+# Runtime data
+storage/uploads/*
+!storage/uploads/.gitkeep
+
+# Logs
+*.log
