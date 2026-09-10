@@ -8,6 +8,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/hyanhsing/hyandrop/backend/internal/config"
+	"github.com/hyanhsing/hyandrop/backend/internal/httpapi"
+	"github.com/hyanhsing/hyandrop/backend/internal/postgres"
+	"github.com/hyanhsing/hyandrop/backend/internal/room"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/redis/go-redis/v9"
 )
@@ -73,6 +76,11 @@ func main() {
 	})
 
 	api := router.Group("/api")
+	roomRepository := postgres.NewRoomRepository(db)
+	roomService := room.NewService(roomRepository, time.Duration(cfg.RoomTTLHours)*time.Hour, time.Now)
+	roomHandler := httpapi.NewRoomHandler(roomService)
+	roomHandler.Register(api)
+
 	api.GET("/version", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"name":             cfg.AppName,
